@@ -1,0 +1,56 @@
+# roles/marathon/tasks/configure.yml
+---
+- name: configure | zookeeper
+  template:
+    src: zk.j2
+    dest: "{{ marathon.conf_dir }}/zk"
+    mode: 644
+  notify:
+   - restart marathon
+
+- name: configure | mesos master
+  template:
+    src: master.j2
+    dest: "{{ marathon.conf_dir }}/master"
+    mode: 644
+  notify:
+   - restart marathon
+
+- name: configure | hostname
+  template:
+    src: hostname.j2
+    dest: "{{ marathon.conf_dir }}/hostname"
+  notify:
+    - restart mesos master
+
+- name: configure | task launch timeout
+  copy:
+    content: "{{ marathon_config_task_launch_timeout }}"
+    dest: "{{ marathon.conf_dir }}/task_launch_timeout"
+    mode: 644
+  notify:
+   - restart marathon
+
+- name: configure | datadog reporter
+  copy:
+    content: "{{ marathon_config_reporter_datadog }}"
+    dest: "{{ marathon.conf_dir }}/reporter_datadog"
+    mode: 644
+  notify:
+   - restart marathon
+  when: "'monitoring' in group_names"
+
+- name: configure | http port
+  copy:
+    content: "{{ marathon_config_http_port }}"
+    dest: "{{ marathon.conf_dir }}/http_port"
+    mode: 644
+  notify:
+   - restart marathon
+
+#- name: configure | rsyslog
+#  template:
+#    src: rsyslog.conf.j2
+#    dest: /etc/rsyslog.d/80-mesos-marathon.conf
+#  notify:
+#    - restart rsyslog

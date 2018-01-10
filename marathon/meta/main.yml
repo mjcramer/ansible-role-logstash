@@ -1,0 +1,5 @@
+# roles/marathon/meta/main.yml
+---
+dependencies:
+  - role: system
+  - role: mesos-common

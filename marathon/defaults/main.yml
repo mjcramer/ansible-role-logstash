@@ -1,0 +1,11 @@
+# roles/marathon/defaults/main.yml
+---
+# Server deployment parameters - these control how marathon is deployed
+marathon_version: 1.4.3
+marathon_user: marathon
+marathon_group: resource
+
+marathon_config_http_port: "{{ marathon_port | default(8080) }}"
+marathon_config_task_launch_timeout: 300000
+marathon_config_reporter_datadog: "udp://localhost:8125?prefix={{ cluster_name }}&tags=marathon&interval=10"
+

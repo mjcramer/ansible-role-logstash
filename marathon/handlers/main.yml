@@ -1,0 +1,6 @@
+# roles/marathon/handlers/main.yml
+---
+- name: restart marathon
+  service:
+    name: marathon
+    state: restarted

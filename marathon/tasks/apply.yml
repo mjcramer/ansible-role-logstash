@@ -1,0 +1,10 @@
+# roles/marathon/tasks/apply.yml
+---
+- name: apply | packages
+  package:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - marathon
+

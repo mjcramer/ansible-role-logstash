@@ -1,0 +1,6 @@
+# roles/marathon/tasks/check.yml
+---
+- name: check | marathon port
+  wait_for:
+    port: "{{ marathon_config_http_port }}"
+    timeout: 60

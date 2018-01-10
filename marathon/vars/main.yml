@@ -1,0 +1,8 @@
+# roles/mesos-marathon/vars/main.yml
+---
+marathon:
+  home_dir: "{{ base_lib_dir }}/marathon"
+  env_file: "/etc/default/marathon"
+  conf_dir: "/etc/marathon/conf"
+  log_dir: "{{ base_log_dir }}/marathon"
+  lib_dir: "{{ base_lib_dir }}/marathon"

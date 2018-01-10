@@ -1,0 +1,25 @@
+{% if zookeeper_hosts is defined -%}
+{% set hosts = zookeeper_hosts -%}
+{% elif groups['zookeeper_hosts'] is defined %}
+{% set hosts = groups['zookeeper_hosts'] -%}
+{% elif zookeeper_hostgroup is defined and groups[zookeeper_hostgroup] is defined %}
+{% set hosts = groups[zookeeper_hostgroup] -%}
+{% endif -%}
+zk://
+{%- if hosts is defined -%}
+{%- for host in hosts -%}
+{%- if hostvars[host]['cluster_interface'] is defined -%}
+{%- set key = 'ansible_' + hostvars[host]['cluster_interface'] -%}
+{%- set host_ipv4 = hostvars[host][key]['ipv4'] -%}
+{%- else -%}
+{%- set host_ipv4 = hostvars[host]['ansible_default_ipv4'] -%}
+{%- endif -%}
+{{ host_ipv4['address'] | default(host) }}:{{ zookeeper_port }}
+{%- if not loop.last -%}
+,
+{%- endif -%}
+{%- endfor -%}
+{%- else -%}
+{{ zookeeper_host | default('localhost')}}:{{ zookeeper_port | default(2181) }}
+{%- endif -%}
+/marathon

@@ -1,0 +1,5 @@
+{%- if cluster_interface is defined and cluster_interface in ansible_interfaces -%}
+    {{ hostvars[inventory_hostname]['ansible_'+cluster_interface]['ipv4']['address'] }}
+{%- else -%}
+    {{ ansible_default_ipv4.address }}
+{%- endif -%}

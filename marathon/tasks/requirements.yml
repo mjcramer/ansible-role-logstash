@@ -1,0 +1,27 @@
+# roles/mesos-marathon/tasks/requirements.yml
+---
+- name: apply | add group
+  group:
+    name: "{{ marathon_group }}"
+    system: true
+    state: present
+
+- name: apply | add user
+  user:
+    name: "{{ marathon_user}}"
+    group: "{{ marathon_group }}"
+    system: true
+    createhome: no
+    home: "{{ marathon.home_dir }}"
+    state: present
+
+- name: apply | create folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ marathon_user }}"
+    group: "{{ marathon_group }}"
+  with_items:
+    - "{{ marathon.conf_dir }}"
+    - "{{ marathon.log_dir }}"
+    - "{{ marathon.lib_dir }}"
